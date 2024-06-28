@@ -40,8 +40,8 @@ public class ForoHubApplication {
 			System.out.println("Cargando datos para iniciar la aplicacion...");
 
 			List.of("Create_user","Update_user","Delete_user",
-					"Create_role","Update_role","Delete_role",
-					"Create_permission","Update_permission","Delete_permission"
+					"Create_role","Update_role","Delete_role","Read_role",
+					"Create_permission","Update_permission","Delete_permission","Read_permission"
 			).forEach(permission -> {
 				permissionRepository.save(Permission.builder()
 						.name(permission)
@@ -49,7 +49,7 @@ public class ForoHubApplication {
 			});
 
 			Role role = roleRepository.save(Role.builder()
-					.name("ADMIN")
+					.name("ROOT")
 					.permissions(permissionRepository.findAll())
 					.build());
 

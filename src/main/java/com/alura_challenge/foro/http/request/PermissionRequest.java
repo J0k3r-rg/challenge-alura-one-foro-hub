@@ -7,6 +7,6 @@ import lombok.Data;
 public class PermissionRequest {
 
     @NotBlank
-    private String id;
+    private String name;
 
 }

@@ -31,7 +31,8 @@ public class User implements UserDetails {
 
     private String password;
 
-    private boolean enable;
+    @Builder.Default
+    private boolean enable = true;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
@@ -39,9 +40,13 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+this.role.getName()));
-        this.role.getPermissions().forEach(permission ->
-                authorities.add(new SimpleGrantedAuthority(permission.getName())));
+        if (role.isEnable()) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.getName()));
+            this.role.getPermissions().forEach(permission -> {
+                if (permission.isEnable())
+                    authorities.add(new SimpleGrantedAuthority(permission.getName()));
+            });
+        }
         return authorities;
     }
 

@@ -31,4 +31,6 @@ public class Role {
     )
     private List<Permission> permissions;
 
+    @Builder.Default
+    private boolean enable = true;
 }

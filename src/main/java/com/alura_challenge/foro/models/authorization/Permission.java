@@ -23,4 +23,7 @@ public class Permission {
 
     private String name;
 
+    @Builder.Default
+    private boolean enable = true;
+
 }
