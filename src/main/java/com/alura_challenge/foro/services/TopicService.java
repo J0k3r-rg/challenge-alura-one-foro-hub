@@ -54,8 +54,14 @@ public class TopicService {
                 .toList();
     }
 
-    public List<TopicResponse> getAllTopics() {
+    public List<TopicResponse> getTopics() {
         return topicRepository.findByEnable(true).stream()
+                .map(TopicUtils::toTopicResponse)
+                .toList();
+    }
+
+    public List<TopicResponse> getAllTopics() {
+        return topicRepository.findAll().stream()
                 .map(TopicUtils::toTopicResponse)
                 .toList();
     }
