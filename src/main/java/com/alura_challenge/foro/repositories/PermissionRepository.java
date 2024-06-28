@@ -13,4 +13,6 @@ public interface PermissionRepository extends JpaRepository<Permission, String> 
     Optional<Permission> findByNameAndEnable(String name, boolean enable);
 
     List<Permission> findByEnable(boolean enable);
+
+    Permission findByName(String permission);
 }

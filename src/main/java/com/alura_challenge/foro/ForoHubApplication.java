@@ -39,16 +39,28 @@ public class ForoHubApplication {
 		return args -> {
 			System.out.println("Cargando datos para iniciar la aplicacion...");
 
-			List.of("Create_user","Update_user","Delete_user",
+			List.of(
 					"Create_role","Update_role","Delete_role","Read_role",
-					"Create_permission","Update_permission","Delete_permission","Read_permission"
+					"Create_permission","Update_permission","Delete_permission","Read_permission",
+					"Create_topic","Update_topic","Delete_topic","Read_topic","All_topic"
 			).forEach(permission -> {
 				permissionRepository.save(Permission.builder()
 						.name(permission)
 						.build());
 			});
 
-			Role role = roleRepository.save(Role.builder()
+			List<Permission> permissions = List.of(
+					"Create_topic","Update_topic","Delete_topic","Read_topic"
+			).stream().map(permission ->
+				permissionRepository.findByName(permission)
+			).toList();
+
+			Role user = roleRepository.save(Role.builder()
+					.name("USER")
+					.permissions(permissions)
+					.build());
+
+			Role root = roleRepository.save(Role.builder()
 					.name("ROOT")
 					.permissions(permissionRepository.findAll())
 					.build());
@@ -56,7 +68,14 @@ public class ForoHubApplication {
 			userRepository.save(User.builder()
 							.username("admin")
 							.password(passwordEncoder.encode("admin"))
-							.role(role)
+							.role(root)
+							.enable(true)
+					.build());
+
+			userRepository.save(User.builder()
+							.username("user")
+							.password(passwordEncoder.encode("user"))
+							.role(user)
 							.enable(true)
 					.build());
 		};
